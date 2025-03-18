@@ -29,39 +29,90 @@ install_package() {
 install_package ffmpeg
 install_package zenity
 
-# Open a file selection dialog to choose a video file
-INPUT_FILE=$(zenity --file-selection --title="Select a Video File to Compress")
+# Show the initial menu with options
+ACTION=$(zenity --list --title="Video Tool" --column="Action" "Compress Video" "Convert Video to GIF" "Exit")
 
-# Exit if no file is selected
-if [ -z "$INPUT_FILE" ]; then
-  echo "No file selected. Exiting..."
-  exit 1
-fi
+# Check the selected action
+if [ "$ACTION" = "Exit" ]; then
+  echo "Exiting..."
+  exit 0
+elif [ "$ACTION" = "Compress Video" ]; then
+  # Open a file selection dialog to choose a video file
+  INPUT_FILE=$(zenity --file-selection --title="Select a Video File to Compress")
 
-# Get the directory and filename of the selected file
-DIR=$(dirname "$INPUT_FILE")
-BASENAME=$(basename "$INPUT_FILE")
-FILENAME="${BASENAME%.*}"
+  # Exit if no file is selected
+  if [ -z "$INPUT_FILE" ]; then
+    echo "No file selected. Exiting..."
+    exit 1
+  fi
 
-# Define the output file path
-OUTPUT_FILE="$DIR/${FILENAME}_compressed.mov"
+  # Get the directory and filename of the selected file
+  DIR=$(dirname "$INPUT_FILE")
+  BASENAME=$(basename "$INPUT_FILE")
+  FILENAME="${BASENAME%.*}"
 
-# If the output file already exists, remove it
-if [ -f "$OUTPUT_FILE" ]; then
-  rm "$OUTPUT_FILE"
-fi
+  # Define the output file path
+  OUTPUT_FILE="$DIR/${FILENAME}_compressed.mov"
 
-zenity --progress --text="Compression in progress..." --title="Processing Video" --no-cancel &
-ZENITY_PID=$!
-# Run the FFmpeg command to compress the video
-ffmpeg -i "$INPUT_FILE" -vcodec libx264 -crf 28 -preset fast -acodec aac -b:a 128k "$OUTPUT_FILE"
+  # If the output file already exists, remove it
+  if [ -f "$OUTPUT_FILE" ]; then
+    rm "$OUTPUT_FILE"
+  fi
 
-kill $ZENITY_PID
+  zenity --progress --text="Compression in progress..." --title="Processing Video" --no-cancel &
+  ZENITY_PID=$!
+  # Run the FFmpeg command to compress the video
+  ffmpeg -i "$INPUT_FILE" -vcodec libx264 -crf 28 -preset fast -acodec aac -b:a 128k "$OUTPUT_FILE"
 
-# Notify the user when the process is complete
-if [ $? -eq 0 ]; then
-  open "$DIR"  # On macOS
-  zenity --info --text="Compression completed successfully!\nOutput File: $OUTPUT_FILE"
+  kill $ZENITY_PID
+
+  # Notify the user when the process is complete
+  if [ $? -eq 0 ]; then
+    open "$DIR"  # On macOS
+    zenity --info --text="Compression completed successfully!\nOutput File: $OUTPUT_FILE"
+  else
+    zenity --error --text="Compression failed. Please check the input file and try again."
+  fi
+
+elif [ "$ACTION" = "Convert Video to GIF" ]; then
+  # Open a file selection dialog to choose a video file
+  INPUT_FILE=$(zenity --file-selection --title="Select a Video File to Convert to GIF")
+
+  # Exit if no file is selected
+  if [ -z "$INPUT_FILE" ]; then
+    echo "No file selected. Exiting..."
+    exit 1
+  fi
+
+  # Get the directory and filename of the selected file
+  DIR=$(dirname "$INPUT_FILE")
+  BASENAME=$(basename "$INPUT_FILE")
+  FILENAME="${BASENAME%.*}"
+
+  # Define the output file path for the GIF
+  OUTPUT_FILE="$DIR/${FILENAME}.gif"
+
+  # If the output file already exists, remove it
+  if [ -f "$OUTPUT_FILE" ]; then
+    rm "$OUTPUT_FILE"
+  fi
+
+  zenity --progress --text="Converting to GIF..." --title="Processing Video" --no-cancel &
+  ZENITY_PID=$!
+  # Run the FFmpeg command to convert the video to GIF
+  ffmpeg -i "$INPUT_FILE" -vf "fps=10,scale=1000:-1:flags=lanczos" -c:v gif "$OUTPUT_FILE"
+
+  kill $ZENITY_PID
+
+  # Notify the user when the process is complete
+  if [ $? -eq 0 ]; then
+    open "$DIR"  # On macOS
+    zenity --info --text="Conversion to GIF completed successfully!\nOutput File: $OUTPUT_FILE"
+  else
+    zenity --error --text="Conversion failed. Please check the input file and try again."
+  fi
+
 else
-  zenity --error --text="Compression failed. Please check the input file and try again."
+  echo "Invalid selection. Exiting..."
+  exit 1
 fi

@@ -33,3 +33,10 @@ Simply execute the script in a terminal:
 ```bash
 chmod +x video_compress.sh
 ./video_compress.sh
+```
+
+### Web Version
+I’ve also ported the video compression tool to a web version, which you can use at:
+[Video to GIF Converter](https://chopper-vn.web.app/video)
+
+Please note that the web version may take longer to convert due to the use of WebAssembly (WASM) for video processing.
