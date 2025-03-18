@@ -1,12 +1,14 @@
-# Video Compression Script
+# Video Compression and GIF Conversion Script
 
-A simple, cross-platform script to compress video files using `ffmpeg` and `zenity`. The script provides a graphical interface for selecting a video file, compressing it, and saving the compressed version.
+A simple, cross-platform script to compress video files and convert them to GIFs using `ffmpeg` and `zenity`. The script provides a graphical interface for selecting a video file, performing the desired action, and saving the resulting file.
 
 ## Features
 
 - **Cross-platform**: Supports Homebrew (macOS) and APT (Linux) for package management.
 - **Graphical Interface**: Uses `zenity` for a simple file selection and progress dialog.
 - **Video Compression**: Uses `ffmpeg` to compress videos into `.mov` format with customizable settings.
+- **Video to GIF Conversion**: Converts videos to GIFs with customizable frame rates and sizes.
+- **Web Version**: A web-based version of the tool is available for online video processing (may be slower due to WebAssembly).
 
 ## Prerequisites
 
