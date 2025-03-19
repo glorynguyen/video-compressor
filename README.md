@@ -31,6 +31,14 @@ chmod +x video_compress.sh
 
 If ffmpeg or zenity are not installed, the script will detect the appropriate package manager (Homebrew for macOS, APT for Linux) and install them before proceeding.
 
+### Local running 
+
+After running the script, the application will start like this. You can choose an action: either compress video (reduce it's size) or convert video to a GIF. 
+
+<img width="481" alt="image" src="https://github.com/user-attachments/assets/49ee1a95-7c71-4836-9209-b041d53aec40" />
+
+The output will be in the same directory as the input file.
+
 ### Web Version
 I’ve also ported the video compression tool to a web version, which you can use at:
 [Video to GIF Converter](https://chopper-vn.web.app/video)
