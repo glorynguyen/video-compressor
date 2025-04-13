@@ -6,14 +6,16 @@ import { Compress } from "@cheryx2020/core";
 import { Routes, Route, Link } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
+import './App.scss';
 
 function App() {
   return <>
     <div className="container">
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">
-            Video Compressor
+          <Link className="navbar-brand flex center" to="/">
+            <div className="logo"></div>
+            <div className="ml-10">Video Compressor</div>
           </Link>
 
           <button
