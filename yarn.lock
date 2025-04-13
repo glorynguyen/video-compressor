@@ -301,10 +301,10 @@
   dependencies:
     axios "^1.5.1"
 
-"@cheryx2020/core@^1.1.135":
-  version "1.1.135"
-  resolved "https://registry.yarnpkg.com/@cheryx2020/core/-/core-1.1.135.tgz#df505734416ee3f5a202e92605163738bb85459c"
-  integrity sha512-YAu19CJTIYZWh1clVjRTsVpTnIzJ5Nqla2iLe0Ti3mIwEPGPIe78dZB65ATotFndLKAJLYDrHYfoRv18czzD4w==
+"@cheryx2020/core@^1.1.141":
+  version "1.1.141"
+  resolved "https://registry.yarnpkg.com/@cheryx2020/core/-/core-1.1.141.tgz#e5f474fae66ff93528edab55f646cb9fb2f57c3a"
+  integrity sha512-7WS22RvF0bflboO3Z+F+2Kq3v6aIO8sKNNJn4ox3pvwh05hGtZUcJrO8hnlNTlbU2rS85RmV7TmBvEm0rNBVVg==
   dependencies:
     "@cheryx2020/api-service" "^1.0.19"
     "@cheryx2020/utils" "^1.5.6"
