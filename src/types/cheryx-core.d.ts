@@ -7,9 +7,18 @@ declare module "@cheryx2020/core" {
     fetchFile: (file: File) => Promise<Uint8Array>;
     coreURL: string;
     wasmURL: string;
+    type: string;
   }
 
-  const Compress: FC<CompressProps>;
+  interface CompressComponent extends FC<CompressProps> {
+    CompressType: {
+      COMPRESS: string;
+      GIF: string;
+    };
+  }
+
+
+  const Compress: CompressComponent;
 
   export { Compress };
 }
