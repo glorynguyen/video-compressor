@@ -6,6 +6,7 @@ import { Compress } from "@cheryx2020/core";
 import { Routes, Route, Link } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
+import LocalTool from "./pages/LocalTool";
 import "/node_modules/@cheryx2020/core/dist/index.css"
 
 function App() {
@@ -43,6 +44,11 @@ function App() {
                 </Link>
               </li>
               <li className="nav-item">
+                <Link className="nav-link" to="/localtool">
+                  Local Tool Guide
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link" to="/about">
                   About
                 </Link>
@@ -56,6 +62,7 @@ function App() {
         <Route path="/" element={<Compress key={Compress.CompressType.COMPRESS} FFmpeg={FFmpeg} fetchFile={fetchFile} coreURL={coreURL} wasmURL={wasmURL} type={Compress.CompressType.COMPRESS}/>} />
         <Route path="/videotogif" element={<Compress key={Compress.CompressType.GIF} FFmpeg={FFmpeg} fetchFile={fetchFile} coreURL={coreURL} wasmURL={wasmURL} type={Compress.CompressType.GIF}/>} />
         <Route path="/about" element={<About />} />
+        <Route path="/localtool" element={<LocalTool />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
