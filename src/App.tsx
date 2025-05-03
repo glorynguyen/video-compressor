@@ -6,7 +6,7 @@ import { Compress } from "@cheryx2020/core";
 import { Routes, Route, Link } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
-import './App.scss';
+import "/node_modules/@cheryx2020/core/dist/index.css"
 
 function App() {
   return <>
@@ -33,6 +33,16 @@ function App() {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
+                <Link className="nav-link" to="/">
+                Compress Video
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/videotogif">
+                Convert to GIF
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link" to="/about">
                   About
                 </Link>
@@ -43,7 +53,8 @@ function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Compress FFmpeg={FFmpeg} fetchFile={fetchFile} coreURL={coreURL} wasmURL={wasmURL} />} />
+        <Route path="/" element={<Compress key={Compress.CompressType.COMPRESS} FFmpeg={FFmpeg} fetchFile={fetchFile} coreURL={coreURL} wasmURL={wasmURL} type={Compress.CompressType.COMPRESS}/>} />
+        <Route path="/videotogif" element={<Compress key={Compress.CompressType.GIF} FFmpeg={FFmpeg} fetchFile={fetchFile} coreURL={coreURL} wasmURL={wasmURL} type={Compress.CompressType.GIF}/>} />
         <Route path="/about" element={<About />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
