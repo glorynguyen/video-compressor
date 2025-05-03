@@ -12,7 +12,16 @@ const About = () => {
                 <p className="card-text">
                   <strong>Video Compressor</strong> is a lightweight and powerful web-based tool designed 
                   to efficiently compress video files directly in your browser.  
-                  This tool is built by <strong>Vinh Nguyen</strong>, utilizing <a 
+                  This tool is built by <strong>
+                    <a 
+                      href="https://www.linkedin.com/in/vinh-nguyen-479781130/" 
+                      className="fw-bold text-decoration-none" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      Vinh Nguyen
+                    </a>
+                  </strong>, utilizing <a 
                   href="https://www.ffmpeg.org/" 
                   className="fw-bold text-decoration-none" 
                   target="_blank" 
@@ -36,7 +45,16 @@ const About = () => {
             </div>
             <div className="text-center mt-4">
               <small className="text-muted">
-                Developed with ❤️ by <strong>Vinh Nguyen</strong>
+                Developed with ❤️ by <strong>
+                  <a 
+                    href="https://www.linkedin.com/in/vinh-nguyen-479781130/" 
+                    className="text-muted text-decoration-none" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    Vinh Nguyen
+                  </a>
+                </strong>
               </small>
             </div>
           </div>
