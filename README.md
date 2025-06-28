@@ -78,6 +78,13 @@ This tool was developed with ❤️ by [Vinh Nguyen](https://www.linkedin.com/in
 - The script uses `zenity` for graphical dialogs. Ensure `zenity` is installed and working correctly.
 - On macOS, the script will automatically open the output directory after processing.
 
+## Development
+1. Pull repository
+2. At the local run
+   ```bash
+   npm i && npm run dev
+   ```
+
 ## Deployment
 
 The web application is deployed using Firebase Hosting. The deployment process is automated via a GitHub Actions workflow. The workflow builds the project and deploys it to Firebase Hosting upon a push to the `main` branch.
