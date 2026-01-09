@@ -30,7 +30,7 @@ install_package ffmpeg
 install_package zenity
 
 # Show the initial menu with options
-ACTION=$(zenity --list --title="Video Tool" --column="Action" "Compress Video" "Convert Video to GIF" "Exit")
+ACTION=$(zenity --list --title="Video Tool" --column="Action" "Compress Video" "Convert Video to GIF" "Convert Images to WebP" "Exit")
 
 # Check the selected action
 if [ "$ACTION" = "Exit" ]; then
@@ -110,6 +110,66 @@ elif [ "$ACTION" = "Convert Video to GIF" ]; then
     zenity --info --text="Conversion to GIF completed successfully!\nOutput File: $OUTPUT_FILE"
   else
     zenity --error --text="Conversion failed. Please check the input file and try again."
+  fi
+
+elif [ "$ACTION" = "Convert Images to WebP" ]; then
+  # Open a file selection dialog to choose multiple image files
+  INPUT_FILES=$(zenity --file-selection --multiple --separator="|" --title="Select Image Files to Convert to WebP" --file-filter="Image files (jpg,jpeg,png,gif,bmp) | *.jpg *.jpeg *.png *.gif *.bmp")
+
+  # Exit if no files are selected
+  if [ -z "$INPUT_FILES" ]; then
+    echo "No files selected. Exiting..."
+    exit 1
+  fi
+
+  # Split the input files by the pipe separator
+  IFS='|' read -ra FILES <<< "$INPUT_FILES"
+  TOTAL_FILES=${#FILES[@]}
+  CONVERTED_COUNT=0
+  FAILED_COUNT=0
+
+  # Process each file
+  for INPUT_FILE in "${FILES[@]}"; do
+    # Get the directory and filename of the selected file
+    DIR=$(dirname "$INPUT_FILE")
+    BASENAME=$(basename "$INPUT_FILE")
+    FILENAME="${BASENAME%.*}"
+
+    # Define the output file path for WebP
+    OUTPUT_FILE="$DIR/${FILENAME}.webp"
+
+    # If the output file already exists, remove it
+    if [ -f "$OUTPUT_FILE" ]; then
+      rm "$OUTPUT_FILE"
+    fi
+
+    # Show progress
+    PROGRESS=$((CONVERTED_COUNT * 100 / TOTAL_FILES))
+    echo "$PROGRESS"
+    echo "# Converting $BASENAME to WebP... ($((CONVERTED_COUNT + 1))/$TOTAL_FILES)"
+
+    # Run the FFmpeg command to convert the image to WebP
+    ffmpeg -i "$INPUT_FILE" -c:v libwebp -quality 85 "$OUTPUT_FILE" -y 2>/dev/null
+
+    # Check if conversion was successful
+    if [ $? -eq 0 ]; then
+      ((CONVERTED_COUNT++))
+    else
+      ((FAILED_COUNT++))
+    fi
+  done | zenity --progress --title="Converting Images to WebP" --percentage=0 --auto-close
+
+  # Get the directory of the first file to open
+  FIRST_FILE="${FILES[0]}"
+  FIRST_DIR=$(dirname "$FIRST_FILE")
+
+  # Notify the user when all conversions are complete
+  if [ $FAILED_COUNT -eq 0 ]; then
+    open "$FIRST_DIR"  # On macOS
+    zenity --info --text="All conversions completed successfully!\n$CONVERTED_COUNT file(s) converted to WebP."
+  else
+    open "$FIRST_DIR"  # On macOS
+    zenity --warning --text="Conversion completed with some errors.\nSuccessful: $CONVERTED_COUNT\nFailed: $FAILED_COUNT"
   fi
 
 else
