@@ -30,11 +30,63 @@ install_package ffmpeg
 install_package zenity
 
 # Show the initial menu with options
-ACTION=$(zenity --list --title="Video Tool" --column="Action" "Compress Video" "Convert Video to GIF" "Convert Images to WebP" "Exit")
+ACTION=$(zenity --list --title="Video Tool" --column="Action" "Compress Video" "Convert Video to GIF" "Convert Images to WebP" "Setup Alias" "Exit")
 
 # Check the selected action
 if [ "$ACTION" = "Exit" ]; then
   echo "Exiting..."
+  exit 0
+elif [ "$ACTION" = "Setup Alias" ]; then
+  # Get the current script path
+  SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+  
+  # Prompt user for alias name
+  ALIAS_NAME=$(zenity --entry --title="Setup Alias" --text="Enter the alias name you want to use (e.g., vtool, videotool):" --entry-text="vtool")
+  
+  # Exit if no alias name is provided
+  if [ -z "$ALIAS_NAME" ]; then
+    zenity --error --text="No alias name provided. Setup cancelled."
+    exit 1
+  fi
+  
+  # Validate alias name (alphanumeric and underscore only)
+  if ! [[ "$ALIAS_NAME" =~ ^[a-zA-Z0-9_]+$ ]]; then
+    zenity --error --text="Invalid alias name. Use only letters, numbers, and underscores."
+    exit 1
+  fi
+  
+  # Detect shell configuration file
+  if [ -n "$ZSH_VERSION" ] || [ -f "$HOME/.zshrc" ]; then
+    SHELL_CONFIG="$HOME/.zshrc"
+  elif [ -n "$BASH_VERSION" ] || [ -f "$HOME/.bashrc" ]; then
+    SHELL_CONFIG="$HOME/.bashrc"
+  else
+    SHELL_CONFIG="$HOME/.bash_profile"
+  fi
+  
+  # Create alias command
+  ALIAS_COMMAND="alias $ALIAS_NAME='$SCRIPT_PATH'"
+  
+  # Check if alias already exists
+  if grep -q "alias $ALIAS_NAME=" "$SHELL_CONFIG" 2>/dev/null; then
+    # Ask if user wants to replace existing alias
+    zenity --question --title="Alias Already Exists" --text="An alias '$ALIAS_NAME' already exists in $SHELL_CONFIG.\n\nDo you want to replace it?"
+    
+    if [ $? -eq 0 ]; then
+      # Remove old alias and add new one
+      sed -i.bak "/alias $ALIAS_NAME=/d" "$SHELL_CONFIG"
+      echo "$ALIAS_COMMAND" >> "$SHELL_CONFIG"
+      zenity --info --text="Alias '$ALIAS_NAME' has been updated in $SHELL_CONFIG\n\nRun: source $SHELL_CONFIG\nOr restart your terminal to use it.\n\nUsage: $ALIAS_NAME"
+    else
+      zenity --info --text="Alias setup cancelled."
+      exit 0
+    fi
+  else
+    # Add new alias
+    echo "$ALIAS_COMMAND" >> "$SHELL_CONFIG"
+    zenity --info --text="Alias '$ALIAS_NAME' has been added to $SHELL_CONFIG\n\nRun: source $SHELL_CONFIG\nOr restart your terminal to use it.\n\nUsage: $ALIAS_NAME"
+  fi
+  
   exit 0
 elif [ "$ACTION" = "Compress Video" ]; then
   # Open a file selection dialog to choose a video file
