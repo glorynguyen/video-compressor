@@ -9,9 +9,17 @@ import About from "./pages/About";
 import LocalTool from "./pages/LocalTool";
 import "/node_modules/@cheryx2020/core/dist/index.css"
 
+const sharedProps = {
+  FFmpeg,
+  fetchFile,
+  coreURL,
+  wasmURL,
+  showOptionsPanel: true,
+};
+
 function App() {
   return <>
-    <div className="container">
+    <div className="container-fluid">
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
           <Link className="navbar-brand flex center" to="/">
@@ -44,6 +52,21 @@ function App() {
                 </Link>
               </li>
               <li className="nav-item">
+                <Link className="nav-link" to="/convert">
+                Convert Format
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/audio">
+                Extract Audio
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/custom">
+                Custom FFmpeg
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link" to="/localtool">
                   Local Tool Guide
                 </Link>
@@ -59,8 +82,11 @@ function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Compress key={Compress.CompressType.COMPRESS} FFmpeg={FFmpeg} fetchFile={fetchFile} coreURL={coreURL} wasmURL={wasmURL} type={Compress.CompressType.COMPRESS}/>} />
-        <Route path="/videotogif" element={<Compress key={Compress.CompressType.GIF} FFmpeg={FFmpeg} fetchFile={fetchFile} coreURL={coreURL} wasmURL={wasmURL} type={Compress.CompressType.GIF}/>} />
+        <Route path="/" element={<Compress key={Compress.CompressType.COMPRESS} {...sharedProps} type={Compress.CompressType.COMPRESS} />} />
+        <Route path="/videotogif" element={<Compress key={Compress.CompressType.GIF} {...sharedProps} type={Compress.CompressType.GIF} />} />
+        <Route path="/convert" element={<Compress key={Compress.CompressType.CONVERT} {...sharedProps} type={Compress.CompressType.CONVERT} />} />
+        <Route path="/audio" element={<Compress key={Compress.CompressType.AUDIO} {...sharedProps} type={Compress.CompressType.AUDIO} />} />
+        <Route path="/custom" element={<Compress key={Compress.CompressType.CUSTOM} {...sharedProps} type={Compress.CompressType.CUSTOM} />} />
         <Route path="/about" element={<About />} />
         <Route path="/localtool" element={<LocalTool />} />
         <Route path="*" element={<NotFound />} />
