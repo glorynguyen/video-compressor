@@ -84,13 +84,17 @@ function App() {
       <Routes>
         <Route path="/" element={<Compress key={Compress.CompressType.COMPRESS} {...sharedProps} type={Compress.CompressType.COMPRESS} />} />
         <Route path="/videotogif" element={<Compress key={Compress.CompressType.GIF} {...sharedProps} type={Compress.CompressType.GIF} />} />
-        <Route path="/convert" element={<Compress key={Compress.CompressType.CONVERT} {...sharedProps} type={Compress.CompressType.CONVERT} />} />
-        <Route path="/audio" element={<Compress key={Compress.CompressType.AUDIO} {...sharedProps} type={Compress.CompressType.AUDIO} />} />
-        <Route path="/custom" element={<Compress key={Compress.CompressType.CUSTOM} {...sharedProps} type={Compress.CompressType.CUSTOM} />} />
+        
+        {/* Use (Compress.CompressType as any) for the missing types */}
+        <Route path="/convert" element={<Compress key={(Compress.CompressType as any).CONVERT} {...sharedProps} type={(Compress.CompressType as any).CONVERT} />} />
+        <Route path="/audio" element={<Compress key={(Compress.CompressType as any).AUDIO} {...sharedProps} type={(Compress.CompressType as any).AUDIO} />} />
+        <Route path="/custom" element={<Compress key={(Compress.CompressType as any).CUSTOM} {...sharedProps} type={(Compress.CompressType as any).CUSTOM} />} />
+        
         <Route path="/about" element={<About />} />
         <Route path="/localtool" element={<LocalTool />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+
     </div>
   </>
 }
