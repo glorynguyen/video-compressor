@@ -1,5 +1,11 @@
-// Adding a type cast for Compress.CompressType at the top of the file
-import { Compress, CompressType } from 'your-compress-module'; // Adjust the import statement if needed
-const compressType: CompressType = Compress.SomeValue; // Replace it with actual value used in routes
+import { Compress } from 'compress-library';
 
-// Your existing routes and component code follows here...
+// Type casting for Compress.CompressType
+const compressType: Compress.CompressType = Compress.CompressType;
+
+// Update lines 87-89 to use the casted CompressType
+const conversionType1 = compressType.CONVERT;
+const conversionType2 = compressType.AUDIO;
+const conversionType3 = compressType.CUSTOM;
+
+// Rest of your code...
