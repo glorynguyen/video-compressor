@@ -328,7 +328,7 @@ Track recurring issues to suggest knowledge base improvements:
 | Package | Version | Purpose |
 |---------|---------|---------|
 | @ffmpeg/ffmpeg | ^0.12.15 | FFmpeg WASM bindings |
-| @cheryx2020/core | ^1.1.142 | Compression UI component |
+| @cheryx2020/core | ^1.4.0 | Compression UI component with FFmpeg options panel |
 | react | ^18.3.1 | React library |
 | vite | ^6.2.0 | Build tool |
 
@@ -338,6 +338,9 @@ Track recurring issues to suggest knowledge base improvements:
 |------|-----------|-------------|
 | `/` | Compress (COMPRESS) | Video compression |
 | `/videotogif` | Compress (GIF) | Video to GIF |
+| `/convert` | Compress (CONVERT) | Format conversion |
+| `/audio` | Compress (AUDIO) | Audio extraction |
+| `/custom` | Compress (CUSTOM) | Custom FFmpeg commands |
 | `/localtool` | LocalTool | Documentation |
 | `/about` | About | Project info |
 
