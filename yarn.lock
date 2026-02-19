@@ -306,10 +306,10 @@
   dependencies:
     axios "^1.9.0"
 
-"@cheryx2020/core@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@cheryx2020/core/-/core-1.6.0.tgz#cadfe684fd307522dcaa4c0aa14633fa5bd9a38c"
-  integrity sha512-1DqDX2ATtvEZaXurp55+6tnTj5DluBdok+eeGkTOM6yubHX77wzrHM2ml6kR34j4NoXqIJ60oYnA7BFs7UnnJg==
+"@cheryx2020/core@1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@cheryx2020/core/-/core-1.7.0.tgz#fb618610234ffe20fbfb8666f43966eecd00b39b"
+  integrity sha512-v+HaquGaK4KLqkDMHkoqLn9so8zIuDc8J05UeEFT7PmrXkLUrddrgV2OogRKDaxCbPeJf/d2QV0P447wXVpk5A==
   dependencies:
     "@cheryx2020/api-service" "^1.0.21"
     "@cheryx2020/utils" "^1.5.14"
