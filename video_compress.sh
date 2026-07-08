@@ -104,7 +104,7 @@ elif [ "$ACTION" = "Compress Video" ]; then
   FILENAME="${BASENAME%.*}"
 
   # Define the output file path
-  OUTPUT_FILE="$DIR/${FILENAME}_compressed.mov"
+  OUTPUT_FILE="$DIR/${FILENAME}_compressed.mp4"
 
   # If the output file already exists, remove it
   if [ -f "$OUTPUT_FILE" ]; then
