@@ -5,7 +5,7 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     ["@semantic-release/exec", {
-      "prepareCmd": "sed -i '' \"s/^VERSION=\\\".*\\\"/VERSION=\\\"${nextRelease.version}\\\"/\" video_compress.sh video_compress_automator.sh"
+      "prepareCmd": "sed -i \"s/^VERSION=\\\".*\\\"/VERSION=\\\"${nextRelease.version}\\\"/\" video_compress.sh video_compress_automator.sh"
     }],
     ["@semantic-release/git", {
       "assets": ["CHANGELOG.md", "video_compress.sh", "video_compress_automator.sh"],
