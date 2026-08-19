@@ -7,7 +7,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import LocalTool from "./pages/LocalTool";
-import "/node_modules/@cheryx2020/core/dist/index.css"
+import "@cheryx2020/core/dist/index.css"
 
 const sharedProps = {
   FFmpeg,
