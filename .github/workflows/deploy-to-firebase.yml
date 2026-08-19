@@ -12,11 +12,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'yarn'  # Cache Yarn dependencies
-      - name: Install Yarn
-        run: npm install -g yarn
+      - name: Enable Corepack
+        run: corepack enable
       - name: Install dependencies and build
-        run: yarn install --frozen-lockfile && yarn build
+        run: yarn install --immutable && yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"

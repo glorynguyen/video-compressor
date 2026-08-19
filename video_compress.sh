@@ -4,17 +4,33 @@ VERSION="1.0.0"
 REPO_RAW_URL="https://raw.githubusercontent.com/glorynguyen/video-compressor/main"
 SCRIPT_NAME="video_compress.sh"
 
-# Check for updates (user-initiated only)
+# Check for updates and offer to install
 _check_update() {
-  REMOTE_VERSION=$(curl -sf --connect-timeout 5 "$REPO_RAW_URL/$SCRIPT_NAME" 2>/dev/null | head -5 | grep '^VERSION=' | cut -d'"' -f2)
-  if [ -z "$REMOTE_VERSION" ]; then
+  REMOTE_SCRIPT=$(curl -sf --connect-timeout 10 "$REPO_RAW_URL/$SCRIPT_NAME" 2>/dev/null)
+  if [ -z "$REMOTE_SCRIPT" ]; then
     zenity --error --text="Could not reach GitHub to check for updates."
+    return 1
+  fi
+  REMOTE_VERSION=$(echo "$REMOTE_SCRIPT" | head -5 | grep '^VERSION=' | cut -d'"' -f2)
+  if [ -z "$REMOTE_VERSION" ]; then
+    zenity --error --text="Update check failed: could not parse remote version."
     return 1
   fi
   if [ "$REMOTE_VERSION" = "$VERSION" ]; then
     zenity --info --text="Already up to date (v$VERSION)."
-  else
-    zenity --info --text="A new version (v$REMOTE_VERSION) is available (you have v$VERSION).\n\nTo update, run:\n  cd $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd) && git pull"
+    return 0
+  fi
+  if zenity --question --text="A new version (v$REMOTE_VERSION) is available (you have v$VERSION).\n\nThis will overwrite the current script. Continue?"; then
+    if ! echo "$REMOTE_SCRIPT" | head -1 | grep -q '^#!/bin/bash'; then
+      zenity --error --text="Update failed: downloaded file is not a valid script."
+      return 1
+    fi
+    SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+    TMPFILE=$(mktemp)
+    echo "$REMOTE_SCRIPT" > "$TMPFILE"
+    mv "$TMPFILE" "$SCRIPT_PATH"
+    chmod +x "$SCRIPT_PATH"
+    zenity --info --text="Updated to v$REMOTE_VERSION.\n\nPlease re-run the script to use the new version."
   fi
 }
 
