@@ -114,64 +114,56 @@ This tool was developed with ❤️ by [Vinh Nguyen](https://www.linkedin.com/in
 
 ## macOS Quick Action (Automator)
 
-You can add a **right-click Quick Action** in Finder so you can compress videos, convert to GIF, or convert images to WebP without opening a terminal.
+Add a **right-click Quick Action** in Finder to compress videos, convert to GIF, or convert images to WebP — no terminal needed.
 
 ### Prerequisites
 
 - macOS 12 or later
 - FFmpeg installed via Homebrew (`brew install ffmpeg`)
 
-### Setup Steps
+### Install
 
-1. Open **Automator** (search for it in Spotlight or find it in `/Applications`).
-2. Click **New Document**, then select **Quick Action** and click **Choose**.
-3. At the top of the workflow, configure:
-   - **Workflow receives current**: `files or folders`
-   - **in**: `Finder`
-4. In the left sidebar, search for **Run Shell Script** and drag it into the workflow area.
-5. In the Run Shell Script action, set:
-   - **Shell**: `/bin/bash`
-   - **Pass input**: `as arguments`
-6. Replace the default script content with the contents of [`video_compress_automator.sh`](./video_compress_automator.sh).
-7. Go to **File → Save**, name it **Video & Image Tool**, and close Automator.
+From the repository root, run:
 
-The Quick Action is now installed at `~/Library/Services/Video & Image Tool.workflow`.
+```bash
+bash install_quickaction.sh
+```
+
+**Quick install (no clone required):**
+
+```bash
+curl -sfL https://raw.githubusercontent.com/glorynguyen/video-compressor/main/install_quickaction.sh -o /tmp/install_quickaction.sh && curl -sfL https://raw.githubusercontent.com/glorynguyen/video-compressor/main/video_compress_automator.sh -o /tmp/video_compress_automator.sh && [ -s /tmp/install_quickaction.sh ] && [ -s /tmp/video_compress_automator.sh ] && bash /tmp/install_quickaction.sh; rm -f /tmp/install_quickaction.sh /tmp/video_compress_automator.sh
+```
+
+This installs the script to `~/.local/bin/` and creates the Automator workflow at `~/Library/Services/Video & Image Tool.workflow`.
 
 ### How to Use
 
 1. In Finder, select one or more files.
 2. **Right-click** → **Quick Actions** → **Video & Image Tool**.
-3. Choose an action from the dialog (Compress Video, Convert to GIF, or Convert to WebP).
+3. Choose an action from the dialog (Compress Video, Convert to GIF, Convert to WebP, or Check for Updates).
 4. A notification will appear when processing is complete.
+
+### Update
+
+The Quick Action automatically checks for updates on each launch and shows a notification if a new version is available. To update:
+
+- **From the menu**: Select **Check for Updates** from the action dialog.
+- **From the terminal**: Re-run `bash install_quickaction.sh` after pulling the latest code.
 
 ### Distributing to Other Macs
 
-**Method 1: Double-click install**
+Zip the repository (or just `install_quickaction.sh` + `video_compress_automator.sh`) and share it. Recipients run:
 
-Send the `Video & Image Tool.workflow` folder (from `~/Library/Services/`) to another user. When they double-click it, macOS will prompt them to install it automatically.
+```bash
+bash install_quickaction.sh
+```
 
-**Method 2: Shell script installer**
+### Uninstall
 
-1. Copy the `.workflow` out of `~/Library/Services/` into a folder.
-2. Add an `install.sh` alongside it:
-   ```bash
-   #!/bin/bash
-   WORKFLOW_NAME="Video & Image Tool.workflow"
-   SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-   TARGET_DIR="$HOME/Library/Services"
-
-   if [ ! -d "$SCRIPT_DIR/$WORKFLOW_NAME" ]; then
-     echo "Error: Cannot find '$WORKFLOW_NAME' next to this script."
-     exit 1
-   fi
-
-   mkdir -p "$TARGET_DIR"
-   cp -R "$SCRIPT_DIR/$WORKFLOW_NAME" "$TARGET_DIR/"
-   killall pbs 2>/dev/null
-
-   echo "Installed! Right-click a file in Finder → Quick Actions → Video & Image Tool."
-   ```
-3. Zip the folder and distribute. Recipients unzip and run `bash install.sh`.
+```bash
+rm -rf ~/Library/Services/Video\ \&\ Image\ Tool.workflow ~/.local/bin/video_compress_automator.sh
+```
 
 ## Development
 

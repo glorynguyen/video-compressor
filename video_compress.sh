@@ -1,4 +1,22 @@
 #!/bin/bash
+VERSION="1.0.0"
+
+REPO_RAW_URL="https://raw.githubusercontent.com/glorynguyen/video-compressor/main"
+SCRIPT_NAME="video_compress.sh"
+
+# Check for updates (user-initiated only)
+_check_update() {
+  REMOTE_VERSION=$(curl -sf --connect-timeout 5 "$REPO_RAW_URL/$SCRIPT_NAME" 2>/dev/null | head -5 | grep '^VERSION=' | cut -d'"' -f2)
+  if [ -z "$REMOTE_VERSION" ]; then
+    zenity --error --text="Could not reach GitHub to check for updates."
+    return 1
+  fi
+  if [ "$REMOTE_VERSION" = "$VERSION" ]; then
+    zenity --info --text="Already up to date (v$VERSION)."
+  else
+    zenity --info --text="A new version (v$REMOTE_VERSION) is available (you have v$VERSION).\n\nTo update, run:\n  cd $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd) && git pull"
+  fi
+}
 
 # Function to check if a command exists
 command_exists() {
@@ -30,11 +48,14 @@ install_package ffmpeg
 install_package zenity
 
 # Show the initial menu with options
-ACTION=$(zenity --list --title="Video Tool" --column="Action" "Compress Video" "Convert Video to GIF" "Convert Images to WebP" "Setup Alias" "Exit")
+ACTION=$(zenity --list --title="Video Tool" --column="Action" "Compress Video" "Convert Video to GIF" "Convert Images to WebP" "Setup Alias" "Check for Updates" "Exit")
 
 # Check the selected action
 if [ "$ACTION" = "Exit" ]; then
   echo "Exiting..."
+  exit 0
+elif [ "$ACTION" = "Check for Updates" ]; then
+  _check_update
   exit 0
 elif [ "$ACTION" = "Setup Alias" ]; then
   # Get the current script path

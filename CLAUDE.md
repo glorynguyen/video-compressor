@@ -319,6 +319,8 @@ Track recurring issues to suggest knowledge base improvements:
 | `src/App.tsx` | Main app component with routes |
 | `src/main.tsx` | Application entry point |
 | `video_compress.sh` | Local bash tool |
+| `video_compress_automator.sh` | macOS Quick Action script (installed to ~/.local/bin/) |
+| `install_quickaction.sh` | One-command Quick Action installer/updater |
 | `vite.config.ts` | Vite configuration (COOP/COEP headers) |
 | `firebase.json` | Firebase hosting config |
 | `.github/workflows/deploy-to-firebase.yml` | CI/CD pipeline |
